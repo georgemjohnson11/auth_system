@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { login } from '../actions/auth';
-import axios from 'axios';
+import continueWithFacebook from './Facebook';
+import continueWithGoogle from './Google';
 
 const Login = ({ login, isAuthenticated }) => {
     const [formData, setFormData] = useState({
@@ -18,26 +19,6 @@ const Login = ({ login, isAuthenticated }) => {
         e.preventDefault();
 
         login(email, password);
-    };
-
-    const continueWithGoogle = async () => {
-        try {
-            const res = await axios.get(`${process.env.REACT_APP_API_URL}/auth/o/google-oauth2/?redirect_uri=${process.env.REACT_APP_API_URL}/google`)
-
-            window.location.replace(res.data.authorization_url);
-        } catch (err) {
-
-        }
-    };
-
-    const continueWithFacebook = async () => {
-        try {
-            const res = await axios.get(`${process.env.REACT_APP_API_URL}/auth/o/facebook/?redirect_uri=${process.env.REACT_APP_API_URL}/facebook`)
-
-            window.location.replace(res.data.authorization_url);
-        } catch (err) {
-
-        }
     };
 
     if (isAuthenticated) {
