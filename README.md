@@ -26,3 +26,14 @@ If you get an error when using social authentication that says "ModuleNotFoundEr
 -   Open the file "venv/lib/python3.X/site-packages/djoser/social/token/jwt.py"
 -   Change the line "from django.utils.six import text_type" to "from six import text_type"
 -   With this change you should be able to log in using Google and Facebook OAuth2
+
+
+# TODO # 
+1. Add testing (cypress, unit)   
+2. Integrate more authAmazon, Twitter, yahoo, (reddit, pinterest, github,fitbit, apple, tumblr ?)
+2. Integrate Errors using state  
+2. Integrate logging   
+3. Containerize   
+4. Message Board? 
+5. Footer with Terms/Conditions/PrivacyPolicy   
+6. 
