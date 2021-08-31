@@ -2,10 +2,10 @@ import axios from 'axios';
 import {
     LOGIN_SUCCESS,
     LOGIN_FAIL,
-    USER_LOADED_SUCCESS,
-    USER_LOADED_FAIL,
-    AUTHENTICATED_SUCCESS,
-    AUTHENTICATED_FAIL,
+    USER_LOAD_SUCCESS,
+    USER_LOAD_FAIL,
+    AUTH_SUCCESS,
+    AUTH_FAIL,
     PASSWORD_RESET_SUCCESS,
     PASSWORD_RESET_FAIL,
     PASSWORD_RESET_CONFIRM_SUCCESS,
@@ -35,17 +35,17 @@ export const load_user = () => async dispatch => {
             const res = await axios.get(`${process.env.REACT_APP_API_URL}/auth/users/me/`, config);
     
             dispatch({
-                type: USER_LOADED_SUCCESS,
+                type: USER_LOAD_SUCCESS,
                 payload: res.data
             });
         } catch (err) {
             dispatch({
-                type: USER_LOADED_FAIL
+                type: USER_LOAD_FAIL
             });
         }
     } else {
         dispatch({
-            type: USER_LOADED_FAIL
+            type: USER_LOAD_FAIL
         });
     }
 };
@@ -130,22 +130,22 @@ export const checkAuthenticated = () => async dispatch => {
 
             if (res.data.code !== 'token_not_valid') {
                 dispatch({
-                    type: AUTHENTICATED_SUCCESS
+                    type: AUTH_SUCCESS
                 });
             } else {
                 dispatch({
-                    type: AUTHENTICATED_FAIL
+                    type: AUTH_FAIL
                 });
             }
         } catch (err) {
             dispatch({
-                type: AUTHENTICATED_FAIL
+                type: AUTH_FAIL
             });
         }
 
     } else {
         dispatch({
-            type: AUTHENTICATED_FAIL
+            type: AUTH_FAIL
         });
     }
 };
