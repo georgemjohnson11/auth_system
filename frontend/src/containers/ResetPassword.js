@@ -15,7 +15,6 @@ const ResetPassword = ({ reset_password }) => {
 
     const onSubmit = e => {
         e.preventDefault();
-
         reset_password(email);
         setRequestSent(true);
     };

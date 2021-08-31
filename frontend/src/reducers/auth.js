@@ -1,10 +1,10 @@
 import {
     LOGIN_SUCCESS,
     LOGIN_FAIL,
-    USER_LOADED_SUCCESS,
-    USER_LOADED_FAIL,
-    AUTHENTICATED_SUCCESS,
-    AUTHENTICATED_FAIL,
+    USER_LOAD_SUCCESS,
+    USER_LOAD_FAIL,
+    AUTH_SUCCESS,
+    AUTH_FAIL,
     PASSWORD_RESET_SUCCESS,
     PASSWORD_RESET_FAIL,
     PASSWORD_RESET_CONFIRM_SUCCESS,
@@ -27,11 +27,11 @@ const initialState = {
     user: null
 };
 
-export default function(state = initialState, action) {
+export default function (state = initialState, action) {
     const { type, payload } = action;
 
-    switch(type) {
-        case AUTHENTICATED_SUCCESS:
+    switch (type) {
+        case AUTH_SUCCESS:
             return {
                 ...state,
                 isAuthenticated: true
@@ -52,17 +52,17 @@ export default function(state = initialState, action) {
                 ...state,
                 isAuthenticated: false
             }
-        case USER_LOADED_SUCCESS:
+        case USER_LOAD_SUCCESS:
             return {
                 ...state,
                 user: payload
             }
-        case AUTHENTICATED_FAIL:
+        case AUTH_FAIL:
             return {
                 ...state,
                 isAuthenticated: false
             }
-        case USER_LOADED_FAIL:
+        case USER_LOAD_FAIL:
             return {
                 ...state,
                 user: null
@@ -76,9 +76,9 @@ export default function(state = initialState, action) {
             localStorage.removeItem('refresh');
             return {
                 ...state,
+                isAuthenticated: false,
                 access: null,
                 refresh: null,
-                isAuthenticated: false,
                 user: null
             }
         case PASSWORD_RESET_SUCCESS:
