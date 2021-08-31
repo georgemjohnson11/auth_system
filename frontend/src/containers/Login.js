@@ -82,7 +82,7 @@ const Login = ({ login, isAuthenticated }) => {
                 Continue With Facebook
             </button>
             <p className='mt-3'>
-                Don't have an account? <Link to='/signup'>Sign Up</Link>
+                Don't have an account? <Link to='/register'>Sign Up</Link>
             </p>
             <p className='mt-3'>
                 Forgot your Password? <Link to='/reset-password'>Reset Password</Link>
