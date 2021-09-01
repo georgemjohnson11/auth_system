@@ -28,8 +28,12 @@ If you get an error when using social authentication that says "ModuleNotFoundEr
 -   With this change you should be able to log in using Google and Facebook OAuth2
 
 
+# Testing
+## Unit Testing Django endpoints   
+## Unit Testing React with Jest   
+
 # TODO # 
-1. Add testing (cypress, unit)   
+1. Migrate to Typescript and add Cypress unit tests/e2e
 2. Integrate more authAmazon, Twitter, yahoo, (reddit, pinterest, github,fitbit, apple, tumblr ?)
 2. Integrate Errors using state  
 2. Integrate logging   
