@@ -32,6 +32,12 @@ const Navbar = ({ logout, isAuthenticated }) => {
         <Fragment>
             <nav className='navbar navbar-expand-lg navbar-light bg-light'>
                 <Link className='navbar-brand' to='/'>GEOJOHN System</Link>
+                <Link 
+                    rel="stylesheet" 
+                    to="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" 
+                    // integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" 
+                    // crossorigin="anonymous"
+                    />
                 <button 
                     className='navbar-toggler' 
                     type='button' 

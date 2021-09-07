@@ -7,8 +7,8 @@ const Layout = ({ checkAuthenticated, load_user, children }) => {
     useEffect(() => {
         checkAuthenticated();
         load_user();
-    }, []);
-
+    }, [checkAuthenticated, load_user]);
+// const Layout = (children) => {
     return (
         <div>
             <Navbar />

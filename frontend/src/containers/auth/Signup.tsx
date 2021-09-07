@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { signup } from '../actions/auth';
+import { signup } from '../../actions/auth';
 import continueWithFacebook from './Facebook';
 import continueWithGoogle from './Google';
 
@@ -81,7 +81,7 @@ const Signup = ({ signup, isAuthenticated }) => {
                         name='password'
                         value={password}
                         onChange={e => onChange(e)}
-                        minLength='6'
+                        minLength={6}
                         required
                     />
                 </div>
@@ -93,7 +93,7 @@ const Signup = ({ signup, isAuthenticated }) => {
                         name='re_password'
                         value={re_password}
                         onChange={e => onChange(e)}
-                        minLength='6'
+                        minLength={6}
                         required
                     />
                 </div>

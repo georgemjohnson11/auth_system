@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { login } from '../actions/auth';
+import { login } from '../../actions/auth';
 import continueWithFacebook from './Facebook';
 import continueWithGoogle from './Google';
 
@@ -49,7 +49,7 @@ const Login = ({ login, isAuthenticated }) => {
                         name='password'
                         value={password}
                         onChange={e => onChange(e)}
-                        minLength='6'
+                        minLength={6}
                         required
                     />
                 </div>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { reset_password_confirm } from '../actions/auth';
+import { reset_password_confirm } from '../../actions/auth';
 
 const ResetPasswordConfirm = ({ match, reset_password_confirm }) => {
     const [requestSent, setRequestSent] = useState(false);
@@ -37,7 +37,7 @@ const ResetPasswordConfirm = ({ match, reset_password_confirm }) => {
                         name='new_password'
                         value={new_password}
                         onChange={e => onChange(e)}
-                        minLength='6'
+                        minLength={6}
                         required
                     />
                 </div>
@@ -49,7 +49,7 @@ const ResetPasswordConfirm = ({ match, reset_password_confirm }) => {
                         name='re_new_password'
                         value={re_new_password}
                         onChange={e => onChange(e)}
-                        minLength='6'
+                        minLength={6}
                         required
                     />
                 </div>

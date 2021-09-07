@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { googleAuthenticate } from '../actions/auth';
+import { googleAuthenticate } from '../../actions/auth';
 import queryString from 'query-string';
 import axios from 'axios'
 
@@ -16,6 +16,7 @@ const Google = ({ googleAuthenticate }) => {
         if (state && code) {
             googleAuthenticate(state, code);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location]);
 
     return (
