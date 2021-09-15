@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { login } from '../../actions/auth';
+import { login, AuthenticationAction} from '../../actions/auth';
 import continueWithFacebook from './Facebook';
 import continueWithGoogle from './Google';
+import { ThunkDispatch as Dispatch } from "redux-thunk";
 
-const Login = ({ login, isAuthenticated }) => {
+interface IProps {
+    isAuthenticated: () => void;
+    login: Dispatch<AuthenticationAction, {}, any>;
+}
+
+const Login = ({ login, isAuthenticated }: IProps) => {
     const [formData, setFormData] = useState({
         email: '',
         password: '' 
@@ -17,7 +23,6 @@ const Login = ({ login, isAuthenticated }) => {
 
     const onSubmit = e => {
         e.preventDefault();
-
         login(email, password);
     };
 
@@ -76,4 +81,4 @@ const mapStateToProps = state => ({
     isAuthenticated: state.auth.isAuthenticated
 });
 
-export default connect(mapStateToProps, { login })(Login);
+export default connect(null, mapStateToProps, { login })(Login);

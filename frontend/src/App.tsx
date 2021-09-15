@@ -12,6 +12,8 @@ import Facebook from './containers/auth/Facebook';
 import Google from './containers/auth/Google';
 import { Provider } from 'react-redux';
 import './App.css';
+import LoggedInRoute from "./Routes/LoggedInRoute";
+import LoggedOutRoute from "./Routes/LoggedOutRoute";
 
 export default class App extends React.Component <{}> {
   render() {  return (
@@ -19,14 +21,14 @@ export default class App extends React.Component <{}> {
     <Router>
       <Layout>
           <Switch>
-            <Route exact={true} path="/" component={Home} />
-            <Route exact path='/login' component={Login} />
-            <Route exact path='/register' component={Signup} />
-            <Route exact path='/facebook' component={Facebook} />
-            <Route exact path='/google' component={Google} />
-            <Route exact path='/reset-password' component={ResetPassword} />
-            <Route exact path='/password/reset/confirm/:uid/:token' component={ResetPasswordConfirm} />
-            <Route exact path='/activate/:uid/:token' component={Activate} />
+            <LoggedOutRoute exact={true} path="/" component={Home} />
+            <LoggedOutRoute exact={true} path='/login' component={Login} />
+            <LoggedOutRoute exact={true} path='/register' component={Signup} />
+            <LoggedOutRoute exact={true} path='/facebook' component={Facebook} />
+            <LoggedOutRoute exact={true} path='/google' component={Google} />
+            <LoggedOutRoute exact={true} path='/reset-password' component={ResetPassword} />
+            <LoggedOutRoute exact={true} path='/password/reset/confirm/:uid/:token' component={ResetPasswordConfirm} />
+            <LoggedOutRoute exact={true} path='/activate/:uid/:token' component={Activate} />
           </Switch>
       </Layout>
     </Router>

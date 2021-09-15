@@ -1,27 +1,12 @@
+import React from 'react';
 import axios from 'axios';
-import {
-    LOGIN_SUCCESS,
-    LOGIN_FAIL,
-    USER_LOAD_SUCCESS,
-    USER_LOAD_FAIL,
-    AUTH_SUCCESS,
-    AUTH_FAIL,
-    PASSWORD_RESET_SUCCESS,
-    PASSWORD_RESET_FAIL,
-    PASSWORD_RESET_CONFIRM_SUCCESS,
-    PASSWORD_RESET_CONFIRM_FAIL,
-    SIGNUP_SUCCESS,
-    SIGNUP_FAIL,
-    ACTIVATION_SUCCESS,
-    ACTIVATION_FAIL,
-    GOOGLE_AUTH_SUCCESS,
-    GOOGLE_AUTH_FAIL,
-    FACEBOOK_AUTH_SUCCESS,
-    FACEBOOK_AUTH_FAIL,
-    LOGOUT
-} from './types';
+import * as constants from './types';
 
-export const load_user = () => async dispatch => {
+import { ThunkDispatch as Dispatch } from "redux-thunk";
+
+export type AuthenticationAction = IAuthenticate | IUnauthenticate;
+
+export const load_user = () => async (dispatch: Dispatch<AuthenticationAction, {}, any>) => {
     if (localStorage.getItem('access')) {
         const config = {
             headers: {
@@ -33,24 +18,29 @@ export const load_user = () => async dispatch => {
 
         try {
             const res = await axios.get(`${process.env.REACT_APP_API_URL}/auth/users/me/`, config);
-    
-            dispatch({
-                type: USER_LOAD_SUCCESS,
-                payload: res.data
-            });
+            return async (dispatch: Dispatch<AuthenticationAction, {}, any>) => {
+                dispatch({
+                    type: constants.USER_LOAD_SUCCESS,
+                    payload: res.data
+                });
+            }
         } catch (err) {
-            dispatch({
-                type: USER_LOAD_FAIL
-            });
+            return async (dispatch: Dispatch<AuthenticationAction, {}, any>) => {
+                dispatch({
+                    type: constants.USER_LOAD_FAIL
+                });
+            }
         }
     } else {
-        dispatch({
-            type: USER_LOAD_FAIL
-        });
+        return async (dispatch: Dispatch<AuthenticationAction, {}, any>) => {
+            dispatch({
+                type: constants.USER_LOAD_FAIL
+            });
+        }
     }
 };
 
-export const googleAuthenticate = (state, code) => async dispatch => {
+export const googleAuthenticate = (state: string, code: string) => async (dispatch: Dispatch<AuthenticationAction, {}, any>) => {
     if (state && code && !localStorage.getItem('access')) {
         const config = {
             headers: {
@@ -67,22 +57,24 @@ export const googleAuthenticate = (state, code) => async dispatch => {
 
         try {
             const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/o/google-oauth2/?${formBody}`, config);
-
-            dispatch({
-                type: GOOGLE_AUTH_SUCCESS,
-                payload: res.data
-            });
-
-            dispatch(load_user());
+            return async (dispatch: Dispatch<AuthenticationAction, {}, any>) => {
+                dispatch({
+                    type: constants.GOOGLE_AUTH_SUCCESS,
+                    payload: res.data
+                });
+                dispatch(load_user());
+            }
         } catch (err) {
-            dispatch({
-                type: GOOGLE_AUTH_FAIL
-            });
+            return async (dispatch: Dispatch<AuthenticationAction, {}, any>) => {
+                dispatch({
+                    type: constants.GOOGLE_AUTH_FAIL
+                });
+            }
         }
     }
 };
 
-export const facebookAuthenticate = (state, code) => async dispatch => {
+export const facebookAuthenticate = (state: string, code: string) => async (dispatch: Dispatch<AuthenticationAction, {}, any>) => {
     if (state && code && !localStorage.getItem('access')) {
         const config = {
             headers: {
@@ -99,22 +91,24 @@ export const facebookAuthenticate = (state, code) => async dispatch => {
 
         try {
             const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/o/facebook/?${formBody}`, config);
-
-            dispatch({
-                type: FACEBOOK_AUTH_SUCCESS,
-                payload: res.data
-            });
-
-            dispatch(load_user());
+            return async (dispatch: Dispatch<AuthenticationAction, {}, any>) => {
+                dispatch({
+                    type: constants.FACEBOOK_AUTH_SUCCESS,
+                    payload: res.data
+                });
+                dispatch(load_user());
+            }
         } catch (err) {
-            dispatch({
-                type: FACEBOOK_AUTH_FAIL
-            });
+            return async (dispatch: Dispatch<AuthenticationAction, {}, any>) => {
+                dispatch({
+                    type: constants.FACEBOOK_AUTH_FAIL
+                });
+            }
         }
     }
 };
 
-export const checkAuthenticated = () => async dispatch => {
+export const checkAuthenticated = () => async (dispatch: Dispatch<AuthenticationAction, {}, any>) => {
     if (localStorage.getItem('access')) {
         const config = {
             headers: {
@@ -130,27 +124,32 @@ export const checkAuthenticated = () => async dispatch => {
 
             if (res.data.code !== 'token_not_valid') {
                 dispatch({
-                    type: AUTH_SUCCESS
+                    type: constants.AUTH_SUCCESS
                 });
             } else {
                 dispatch({
-                    type: AUTH_FAIL
+                    type: constants.AUTH_FAIL
                 });
             }
         } catch (err) {
             dispatch({
-                type: AUTH_FAIL
+                type: constants.AUTH_FAIL
             });
         }
 
     } else {
         dispatch({
-            type: AUTH_FAIL
+            type: constants.AUTH_FAIL
         });
     }
 };
 
-export const login = (email, password) => async dispatch => {
+export interface IAuthenticate {
+    type: constants.LOGIN_SUCCESS;
+  }
+  
+    
+export const login = (email: string, password: string) => async (dispatch: Dispatch<AuthenticationAction, {}, any>) => {
     const config = {
         headers: {
             'Content-Type': 'application/json'
@@ -162,20 +161,22 @@ export const login = (email, password) => async dispatch => {
     try {
         const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/jwt/create/`, body, config);
 
-        dispatch({
-            type: LOGIN_SUCCESS,
-            payload: res.data
-        });
-
-        dispatch(load_user());
+        return async (dispatch: Dispatch<AuthenticationAction, {}, any>) => {
+            await window.localStorage.setItem("authenticated", "true");
+            dispatch({
+                type: constants.LOGIN_SUCCESS,
+                payload: res.data
+            });
+            dispatch(load_user());
+          };
     } catch (err) {
         dispatch({
-            type: LOGIN_FAIL
+            type: constants.LOGIN_FAIL
         })
     }
 };
 
-export const signup = (first_name, last_name, email, password, re_password) => async dispatch => {
+export const signup = (first_name: string, last_name: string, email: string, password: string, re_password: string) => async (dispatch: Dispatch<AuthenticationAction, {}, any>) => {
     const config = {
         headers: {
             'Content-Type': 'application/json'
@@ -186,19 +187,24 @@ export const signup = (first_name, last_name, email, password, re_password) => a
 
     try {
         const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/users/`, body, config);
-
-        dispatch({
-            type: SIGNUP_SUCCESS,
-            payload: res.data
-        });
+        return async (dispatch: Dispatch<AuthenticationAction, {}, any>) => {
+            await window.localStorage.setItem("authenticated", "true");
+            dispatch({
+                type: constants.SIGNUP_SUCCESS,
+                payload: res.data
+            });
+          };
+        
     } catch (err) {
-        dispatch({
-            type: SIGNUP_FAIL
-        })
+        return async (dispatch: Dispatch<AuthenticationAction, {}, any>) => {
+            dispatch({
+                type: constants.SIGNUP_FAIL
+            })
     }
 };
+}
 
-export const verify = (uid, token) => async dispatch => {
+export const verify = (uid: string, token: string) => async (dispatch: Dispatch<AuthenticationAction, {}, any>) =>{
     const config = {
         headers: {
             'Content-Type': 'application/json'
@@ -211,16 +217,16 @@ export const verify = (uid, token) => async dispatch => {
         await axios.post(`${process.env.REACT_APP_API_URL}/auth/users/activation/`, body, config);
 
         dispatch({
-            type: ACTIVATION_SUCCESS,
+            type: constants.ACTIVATION_SUCCESS,
         });
     } catch (err) {
         dispatch({
-            type: ACTIVATION_FAIL
+            type: constants.ACTIVATION_FAIL
         })
     }
 };
 
-export const reset_password = (email) => async dispatch => {
+export const reset_password = (email: string) => async (dispatch: Dispatch<AuthenticationAction, {}, any>) => {
     const config = {
         headers: {
             'Content-Type': 'application/json'
@@ -233,16 +239,16 @@ export const reset_password = (email) => async dispatch => {
         await axios.post(`${process.env.REACT_APP_API_URL}/auth/users/reset_password/`, body, config);
 
         dispatch({
-            type: PASSWORD_RESET_SUCCESS
+            type: constants.PASSWORD_RESET_SUCCESS
         });
     } catch (err) {
         dispatch({
-            type: PASSWORD_RESET_FAIL
+            type: constants.PASSWORD_RESET_FAIL
         });
     }
 };
 
-export const reset_password_confirm = (uid, token, new_password, re_new_password) => async dispatch => {
+export const reset_password_confirm = (uid: string, token: string, new_password: string, re_new_password: string) => async (dispatch: Dispatch<AuthenticationAction, {}, any>) => {
     const config = {
         headers: {
             'Content-Type': 'application/json'
@@ -255,17 +261,25 @@ export const reset_password_confirm = (uid, token, new_password, re_new_password
         await axios.post(`${process.env.REACT_APP_API_URL}/auth/users/reset_password_confirm/`, body, config);
 
         dispatch({
-            type: PASSWORD_RESET_CONFIRM_SUCCESS
+            type: constants.PASSWORD_RESET_CONFIRM_SUCCESS
         });
     } catch (err) {
         dispatch({
-            type: PASSWORD_RESET_CONFIRM_FAIL
+            type: constants.PASSWORD_RESET_CONFIRM_FAIL
         });
     }
 };
+export interface IUnauthenticate {
+    type: constants.LOGOUT;
+}
+export function logout(): IUnauthenticate {
+return {
+    type: constants.LOGOUT,
+};
+}
 
-export const logout = () => dispatch => {
+export const logout_test = () => dispatch => {
     dispatch({
-        type: LOGOUT
+        type: constants.LOGOUT
     });
 };
