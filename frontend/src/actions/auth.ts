@@ -14,7 +14,7 @@ export const load_user = () => async (dispatch: Dispatch<AuthenticationAction, {
                 'Authorization': `JWT ${localStorage.getItem('access')}`,
                 'Accept': 'application/json'
             }
-        }; 
+        };
 
         try {
             const res = await axios.get(`${process.env.REACT_APP_API_URL}/auth/users/me/`, config);
@@ -115,7 +115,7 @@ export const checkAuthenticated = () => async (dispatch: Dispatch<Authentication
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             }
-        }; 
+        };
 
         const body = JSON.stringify({ token: localStorage.getItem('access') });
 
@@ -146,9 +146,9 @@ export const checkAuthenticated = () => async (dispatch: Dispatch<Authentication
 
 export interface IAuthenticate {
     type: constants.LOGIN_SUCCESS;
-  }
-  
-    
+}
+
+
 export const login = (email: string, password: string) => async (dispatch: Dispatch<AuthenticationAction, {}, any>) => {
     const config = {
         headers: {
@@ -162,13 +162,14 @@ export const login = (email: string, password: string) => async (dispatch: Dispa
         const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/jwt/create/`, body, config);
 
         return async (dispatch: Dispatch<AuthenticationAction, {}, any>) => {
-            await window.localStorage.setItem("authenticated", "true");
+            // Set the type appropriately if dispatch is not working
+            // await window.localStorage.setItem("authenticated", "true");
             dispatch({
                 type: constants.LOGIN_SUCCESS,
                 payload: res.data
             });
             dispatch(load_user());
-          };
+        };
     } catch (err) {
         dispatch({
             type: constants.LOGIN_FAIL
@@ -193,18 +194,18 @@ export const signup = (first_name: string, last_name: string, email: string, pas
                 type: constants.SIGNUP_SUCCESS,
                 payload: res.data
             });
-          };
-        
+        };
+
     } catch (err) {
         return async (dispatch: Dispatch<AuthenticationAction, {}, any>) => {
             dispatch({
                 type: constants.SIGNUP_FAIL
             })
-    }
-};
+        }
+    };
 }
 
-export const verify = (uid: string, token: string) => async (dispatch: Dispatch<AuthenticationAction, {}, any>) =>{
+export const verify = (uid: string, token: string) => async (dispatch: Dispatch<AuthenticationAction, {}, any>) => {
     const config = {
         headers: {
             'Content-Type': 'application/json'
@@ -273,9 +274,9 @@ export interface IUnauthenticate {
     type: constants.LOGOUT;
 }
 export function logout(): IUnauthenticate {
-return {
-    type: constants.LOGOUT,
-};
+    return {
+        type: constants.LOGOUT,
+    };
 }
 
 export const logout_test = () => dispatch => {

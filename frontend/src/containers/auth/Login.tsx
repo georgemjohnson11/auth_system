@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { login, AuthenticationAction} from '../../actions/auth';
+import { login, AuthenticationAction } from '../../actions/auth';
 import continueWithFacebook from './Facebook';
 import continueWithGoogle from './Google';
 import { ThunkDispatch as Dispatch } from "redux-thunk";
@@ -14,7 +14,7 @@ interface IProps {
 const Login = ({ login, isAuthenticated }: IProps) => {
     const [formData, setFormData] = useState({
         email: '',
-        password: '' 
+        password: ''
     });
 
     const { email, password } = formData;
