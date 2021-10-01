@@ -4,6 +4,10 @@ This is a project that demonstrates how you could implement a fully featured JSO
 
 `docker run -d -p 5432:5432 --name my-postgres -e POSTGRES_PASSWORD=postgres postgres`
 
+Migration to Typescript:
+`npm install --save typescript @types/node @types/react @types/react-dom @types/jest @types/react-redux`   
+Rename `.js` -> `.tsx`
+
 In order to test out this project, follow these steps:
 
 -   clone the repository
