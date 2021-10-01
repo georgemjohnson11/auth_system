@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'corsheaders',
     'djoser',
     'accounts',
     'social_django',
@@ -50,6 +51,7 @@ MIDDLEWARE = [
     'social_django.middleware.SocialAuthExceptionMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -88,8 +90,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'auth_system',
         'USER': 'postgres',
-        'PASSWORD': '[YOUR DATABASE PASSWORD]',
-        'HOST': 'localhost'
+        'PASSWORD': 'postgres',
+        'HOST': 'localhost',
+        'PORT': 5432,
     }
 }
 
@@ -165,6 +168,12 @@ SIMPLE_JWT = {
     )
 }
 
+CORS_ORIGIN_WHITELIST = CORS_ALLOWED_ORIGINS = [
+    'http://127.0.0.1:8000',
+    'http://localhost:8000'
+]
+
+#https://djoser.readthedocs.io/en/latest/settings.html
 DJOSER = {
     'LOGIN_FIELD': 'email',
     'USER_CREATE_PASSWORD_RETYPE': True,
